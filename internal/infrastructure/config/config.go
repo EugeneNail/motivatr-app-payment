@@ -9,6 +9,7 @@ import (
 type Config struct {
 	App App
 	Db  Db
+	Jwt Jwt
 }
 
 type App struct {
@@ -21,6 +22,10 @@ type Db struct {
 	Post     int
 	User     string
 	Password string
+}
+
+type Jwt struct {
+	Salt string
 }
 
 func New() (*Config, error) {
@@ -39,6 +44,9 @@ func New() (*Config, error) {
 			Post:     dbPort,
 			User:     os.Getenv("POSTGRES_USER"),
 			Password: os.Getenv("POSTGRES_PASSWORD"),
+		},
+		Jwt: Jwt{
+			Salt: os.Getenv("JWT_SALT"),
 		},
 	}, nil
 }

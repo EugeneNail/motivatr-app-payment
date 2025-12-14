@@ -30,8 +30,8 @@ func main() {
 
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /api/v1/payment", middlewares.WriteJsonResponse(httpHandler.CreatePayment))
-	if err := http.ListenAndServe("0.0.0.0:10000", router); err != nil {
+	router.HandleFunc("POST /api/v1/payments", middlewares.Authenticate(cfg.Jwt.Salt)(middlewares.WriteJsonResponse(httpHandler.CreatePayment)))
+	if err := http.ListenAndServe("0.0.0.0:10000", middlewares.DisableLocalCors(router)); err != nil {
 		panic(err)
 	}
 }

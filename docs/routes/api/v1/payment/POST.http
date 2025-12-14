@@ -1,0 +1,11 @@
+### Create a new payment
+
+POST {{origin}}/api/v1/payments
+Authorization: Bearer {{token}}
+
+{
+    "date": "2025-01-31",
+    "category": 1,
+    "description": "",
+    "value": 100
+}
