@@ -1,13 +1,14 @@
 package postgres
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 	"github.com/EugeneNail/motivatr-app-payment/internal/domain"
 )
 
-func (repository *PaymentRepository) Find(id int) (*domain.Payment, error) {
+func (repository *PaymentRepository) Find(ctx context.Context, id int) (*domain.Payment, error) {
 	payment := domain.Payment{}
 
 	row := repository.db.QueryRow(`SELECT id, date, description, category, value, user_id FROM payments WHERE id = $1`, id)

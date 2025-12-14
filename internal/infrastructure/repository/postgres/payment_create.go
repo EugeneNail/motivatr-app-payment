@@ -1,11 +1,12 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
 	"github.com/EugeneNail/motivatr-app-payment/internal/domain"
 )
 
-func (repository *PaymentRepository) Create(payment *domain.Payment) error {
+func (repository *PaymentRepository) Create(ctx context.Context, payment *domain.Payment) error {
 	row := repository.db.QueryRow(
 		`INSERT INTO payments (date, description, category, value, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
 		payment.Date, payment.Description, payment.Category, payment.Value, payment.UserId,

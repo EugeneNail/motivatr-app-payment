@@ -1,11 +1,12 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
 	"github.com/EugeneNail/motivatr-app-payment/internal/domain"
 )
 
-func (repository *PaymentRepository) Update(payment *domain.Payment) error {
+func (repository *PaymentRepository) Update(ctx context.Context, payment *domain.Payment) error {
 	_, err := repository.db.Exec(`
 		UPDATE payments
 		SET date = $1, description = $2, category = $3, value = $4, user_id = $5
