@@ -66,5 +66,6 @@ func (handler *CreatePaymentHandler) Handle(ctx context.Context, command CreateP
 		return nil, fmt.Errorf("writing a payment to the DB: %w", err)
 	}
 
+	result.Id = payment.Id
 	return result, nil
 }
