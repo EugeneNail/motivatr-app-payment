@@ -35,7 +35,7 @@ func (handler *GetPaymentHandler) Handle(ctx context.Context, query GetPaymentQu
 	}
 
 	if payment == nil {
-		return result, nil
+		return nil, application.ErrNotFound
 	}
 
 	if payment.UserId != query.UserId {

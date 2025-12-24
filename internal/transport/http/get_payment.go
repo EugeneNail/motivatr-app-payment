@@ -28,12 +28,12 @@ func (handler *Handler) GetPayment(request *http.Request) (int, any) {
 		return http.StatusNotFound, nil
 	}
 
-	if err != nil {
-		return http.StatusInternalServerError, fmt.Errorf("handling a GetPayment query for id %d: %w", paymentId, err)
+	if err != nil && errors.Is(err, application.ErrNotFound) {
+		return http.StatusNotFound, nil
 	}
 
-	if result.Payment == nil {
-		return http.StatusNotFound, nil
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("handling a GetPayment query for id %d: %w", paymentId, err)
 	}
 
 	payment := dto.PaymentWithoutUserId{
