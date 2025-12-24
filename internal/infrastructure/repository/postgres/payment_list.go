@@ -8,7 +8,7 @@ import (
 	"github.com/EugeneNail/motivatr-app-payment/internal/domain"
 )
 
-func (repository *PaymentRepository) List(ctx context.Context, userId int) ([]*domain.Payment, error) {
+func (repository *PaymentRepository) List(ctx context.Context, userId int64) ([]*domain.Payment, error) {
 	payments := make([]*domain.Payment, 0)
 	rows, err := repository.db.Query(`
 		SELECT id, date, description, category, value, user_id 

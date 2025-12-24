@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func (repository *PaymentRepository) Count(ctx context.Context, userId int) (int, error) {
+func (repository *PaymentRepository) Count(ctx context.Context, userId int64) (int, error) {
 	row := repository.db.QueryRow(`SELECT COUNT(id) FROM payments WHERE user_id = $1`, userId)
 	var count int
 	if err := row.Scan(&count); err != nil {
