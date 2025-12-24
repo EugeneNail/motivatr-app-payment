@@ -1,0 +1,4 @@
+### Get a payment by id
+
+GET {{origin}}/api/v1/payments/11
+Authorization: Bearer {{token}}

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/EugeneNail/motivatr-app-payment/internal/application/commands"
+	"github.com/EugeneNail/motivatr-app-payment/internal/application/queries"
 	"github.com/EugeneNail/motivatr-app-payment/internal/infrastructure/config"
 	"github.com/EugeneNail/motivatr-app-payment/internal/infrastructure/repository/postgres"
 	transport "github.com/EugeneNail/motivatr-app-payment/internal/transport/http"
@@ -25,12 +26,17 @@ func main() {
 	paymentRepository := postgres.NewPaymentRepository(db)
 
 	createPaymentHandler := commands.NewCreatePaymentHandler(paymentRepository)
+	getPaymentHandler := queries.NewGetPaymentHandler(paymentRepository)
 
-	httpHandler := transport.NewHandler(createPaymentHandler)
+	httpHandler := transport.NewHandler(
+		createPaymentHandler,
+		getPaymentHandler,
+	)
 
 	router := http.NewServeMux()
-
 	router.HandleFunc("POST /api/v1/payments", middlewares.Authenticate(cfg.Jwt.Salt)(middlewares.WriteJsonResponse(httpHandler.CreatePayment)))
+	router.HandleFunc("GET /api/v1/payments/{id}", middlewares.Authenticate(cfg.Jwt.Salt)(middlewares.WriteJsonResponse(httpHandler.GetPayment)))
+
 	if err := http.ListenAndServe("0.0.0.0:10000", middlewares.DisableLocalCors(router)); err != nil {
 		panic(err)
 	}
