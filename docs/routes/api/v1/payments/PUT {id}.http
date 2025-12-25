@@ -1,0 +1,11 @@
+### Write new value to a payment
+
+PUT {{origin}}/api/v1/payments/1
+Authorization: Bearer {{token}}
+
+{
+    "date": "2025-12-31",
+    "category": 2,
+    "description": "Updated description",
+    "value": -1234
+}

@@ -27,15 +27,18 @@ func main() {
 
 	createPaymentHandler := commands.NewCreatePaymentHandler(paymentRepository)
 	getPaymentHandler := queries.NewGetPaymentHandler(paymentRepository)
+	updatePaymentHandler := commands.NewUpdatePaymentHandler(paymentRepository)
 
 	httpHandler := transport.NewHandler(
 		createPaymentHandler,
 		getPaymentHandler,
+		updatePaymentHandler,
 	)
 
 	router := http.NewServeMux()
 	router.HandleFunc("POST /api/v1/payments", middlewares.Authenticate(cfg.Jwt.Salt)(middlewares.WriteJsonResponse(httpHandler.CreatePayment)))
-	router.HandleFunc("GET /api/v1/payments/{id}", middlewares.Authenticate(cfg.Jwt.Salt)(middlewares.WriteJsonResponse(httpHandler.GetPayment)))
+	router.HandleFunc("GET  /api/v1/payments/{id}", middlewares.Authenticate(cfg.Jwt.Salt)(middlewares.WriteJsonResponse(httpHandler.GetPayment)))
+	router.HandleFunc("PUT  /api/v1/payments/{id}", middlewares.Authenticate(cfg.Jwt.Salt)(middlewares.WriteJsonResponse(httpHandler.UpdatePayment)))
 
 	if err := http.ListenAndServe("0.0.0.0:10000", middlewares.DisableLocalCors(router)); err != nil {
 		panic(err)
